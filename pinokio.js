@@ -9,6 +9,7 @@ module.exports = {
     let running = {
       install: info.running("install.js"),
       start: info.running("start.js"),
+      start_chat: info.running("start_chat.js"), // Controlla se 'start_chat.js' è in esecuzione
       update: info.running("update.js"),
       reset: info.running("reset.js"),
       link: info.running("link.js")
@@ -21,8 +22,9 @@ module.exports = {
         href: "install.js",
       }]
     } else if (installed) {
-      if (running.start) {
-        let local = info.local("start.js")
+      if (running.start || running.start_chat) {
+        const runningScript = running.start ? "start.js" : "start_chat.js";
+        let local = info.local(runningScript);
         if (local && local.url) {
           return [{
             default: true,
@@ -32,14 +34,14 @@ module.exports = {
           }, {
             icon: 'fa-solid fa-terminal',
             text: "Terminal",
-            href: "start.js",
+            href: runningScript,
           }]
         } else {
           return [{
             default: true,
             icon: 'fa-solid fa-terminal',
             text: "Terminal",
-            href: "start.js",
+            href: runningScript,
           }]
         }
       } else if (running.update) {
@@ -64,11 +66,16 @@ module.exports = {
           href: "link.js",
         }]
       } else {
+        // Questo è il blocco menu quando nulla è in esecuzione
         return [{
           default: true,
           icon: "fa-solid fa-power-off",
           text: "Start",
           href: "start.js",
+        }, { // NUOVA OPZIONE AGGIUNTA QUI
+          icon: "fa-solid fa-comments", // Icona per la chat
+          text: "Start Chat",
+          href: "start_chat.js",
         }, {
           icon: "fa-solid fa-plug",
           text: "Update",
