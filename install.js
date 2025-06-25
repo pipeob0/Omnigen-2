@@ -31,7 +31,9 @@ module.exports = {
         path: "app",                // Edit this to customize the path to start the shell from
         message: [
           "uv pip install gradio devicetorch",
-          "uv pip install -r requirements.txt"
+          "uv pip install -r requirements.txt",
+          "uv pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu124",
+          "uv pip install flash-attn==2.7.4.post1 --no-build-isolation"
         ]
       }
     },
